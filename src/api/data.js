@@ -4,6 +4,7 @@ import { doctors, specializations, nurses, patients, patientsData, medicines,
 
 //sill
 import { formate, formateWithDate, formateDonationRequest} from './formater'
+import { nanoid } from '@reduxjs/toolkit';
 
 
 export const createUserSession = async( { email, password, userType } )=>{
@@ -416,4 +417,47 @@ export const createClinic = ({})=>{
 export const getTotal =(isTotal)=>{
     const count = isTotal?2025:20;
     return new Promise((res)=>res(count));
+}
+export const getAuthedUserConnections = ()=>{
+    return new Promise((res)=>{
+        setTimeout(() => {
+            res({connections:[
+                { id:'sdfsdjkflaff',img:'/images/avatars/default.png', name:'Ahmed', lastMessage:'dfd  sdff sdff sdff sdff sdff sdff sdff sdff sdff sdff sdff sdff sdff sdff sdff sdff7hfcd sdfkj'},
+                { id:'sdfvjsjfdfee',img:'/images/avatars/default.png', name:'Mohamed', lastMessage:' sdff sdff sdff sdff sdff sdff sdffdfd hfcd sdfkj'},
+                { id:'sddffeeeeee',img:'/images/avatars/default.png', name:'zain Mohamed', lastMessage:'dfd hfcd sdfkj'},
+                { id:'sdfddfeeeer',img:'/images/avatars/default.png', name:'sam Mohamed', lastMessage:'dfd hfcd sdfkj'},
+                { id:'sdfdddfwwww',img:'/images/avatars/default.png', name:'abod Mohamed', lastMessage:'dfd hfcd sdfkj'},
+            ] })
+        }, 1000);
+    });
+}
+export const getChatMessages = ({ page, limit, userId })=>{
+    return new Promise((res)=>{
+        setTimeout(() => {
+            res({
+                messages:[
+                {id: nanoid(10), from: userId, date:Date.now(),message:'plrease send the attachments'},
+                {id: nanoid(10), from: userId, date:Date.now(),message:'plrease send the attachments'},
+                {id: nanoid(10), from: 'dskfhkldsjklf', date:Date.now(),message:'plrease send the attachments'},
+                {id: nanoid(10), from: 'dskfhkldsjklf', date:Date.now(),message:'plrease send the attachments'},
+                {id: nanoid(10), from: userId,date:Date.now(),message:'plrease send the attachments'},
+                {id: nanoid(10), from: 'dskfhkldsjklf', date:Date.now(),message:'plrease send the attachments'},
+                {id: nanoid(10), from: userId, date:Date.now(),message:'plrease send the attachments'},
+                {id: nanoid(10), from: 'dskfhkldsjklf', date:Date.now(),message:'plrease send the attachments'},
+                {id: nanoid(10), from: userId, date:Date.now(),message:'plrease send the attachments'} ]
+                ,
+                currentPage: page,
+                totalPages: 10
+            })
+        }, 1000);
+    });
+}
+export const postMessage = ({ message, userId })=>{
+    return new Promise((res)=>{
+        setTimeout(() => {
+            res({
+                message:'message send successfully.'
+            })
+        }, 1000);
+    });
 }

@@ -21,7 +21,7 @@ function SearchFilter({ overlay }) {
 
     return (
         <aside>
-            <section className="collection p-2" style={{display:overlay?'flex':'block',justifyContent:'space-between'}}>
+            <section className="collection p-2" style={{display:overlay?'flex':'block',gap:'5rem'}}>
                 {(searchFor === 'doctor' || searchFor === 'nurse') && (
                     <RadioGroup
                         title= "Gender"

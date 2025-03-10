@@ -21,12 +21,12 @@ function SearchResults() {
     const dispatch = useDispatch();
     const [overlay, setOverlay] = useState(false);
     const location = useLocation();
-
+    const [searchParams, setSearshParams ] = useSearchParams();
 
     const handleSortChange = (selectedOption) => {
         dispatch(setFilter({ sort: selectedOption.value }));
+        setSearshParams({ ...Object.fromEntries(searchParams), sort: selectedOption.value})
     };
-    const [searchParams] = useSearchParams();
     
     const cartType = searchParams.get('searchFor')
     const Result = (cartType === 'doctor' || cartType === 'nurse') ? ResultCard : BloodCard;

@@ -24,8 +24,7 @@ function Profile() {
 
     const dateChangeHandler = (initDate) => {
         const d = new Date(initDate)
-        const date = new Date(d.getFullYear(),d.getMonth(),d.getDay(),9).getTime();//9 is the starting houre the back end will handle it later
-        console.log(date)
+        const date = new Date(d.getFullYear(),d.getMonth(),d.getDay(),9).getTime();
         if (userType === NURSE) dispatch(setAppointmentTime({ appointmentTime: date}))
         dispatch(setInitShecheduleDate({ initDate: date }))
     }
@@ -83,7 +82,7 @@ function Profile() {
                                 Book An Appointment
                             </Card.Header>
                             
-                            <Card.Body>
+                            <Card.Body className="bg-white">
                                 {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
                                 {authedUserType !==PATIENT&&<Alert variant="danger" className="mt-3">Sign Up As Patinet To Book An Appointment</Alert>}
                                 {userType === DOCTOR && (
@@ -106,8 +105,8 @@ function Profile() {
                                         <DatePicker
                                             selected={initShecheduleDate}
                                             onChange={dateChangeHandler}
-                                            minDate={new Date()}
-                                            className="form-control"
+                                            minDate={new Date(new Date().setHours(9))}
+                                            className="form-control bg-white"
                                             popperPlacement="auto"
                                             placeholderText="Select Date"
                                             showIcon

@@ -7,7 +7,7 @@ const RadioGroup = ({ title, name, options, selectedValue }) => {
     const onChange = (e) => dispatch(setFilter({ [e.target.name]: e.target.value }));
 
     return<FormGroup className="mb-3"> 
-        <FormLabel className="">{title}</FormLabel>
+        <FormLabel className="fw-bold">{title}</FormLabel>
         {options.map((option) => (
             <FormCheck
                 key={option.id}

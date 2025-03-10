@@ -80,7 +80,6 @@
 
 .active {
     border: solid 1px var(--border-color);
-    border-radius: 40px;
     color: var(--border-color);
 }
 

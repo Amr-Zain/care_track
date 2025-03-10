@@ -31,7 +31,7 @@ const userTypeOptions = [
 ];
 
 return (
-    <Container  className="py-5">
+    <Container>
     <Row className="justify-content-center align-items-center">
         <Col sm={0} md={6} lg={7} className="d-none d-md-block">
         <Image
@@ -75,6 +75,7 @@ return (
             <Form.Control
                 type="email"
                 placeholder="Email"
+                className='bg-white'
                 isInvalid={!!errors.email}
                 {...register("email", {
                 required: "Email is required",
@@ -96,6 +97,7 @@ return (
                 type="password"
                 placeholder="Password"
                 isInvalid={!!errors.password}
+                className='bg-white'
                 {...register("password", {
                 required: "Password is required",
                 minLength: {

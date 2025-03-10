@@ -5,7 +5,6 @@ import citiesAndSpecializations from './features/cities-specializations';
 import appointments from './features/appointments';
 import search from './features/search';
 import medicalHistory from './features/medicalHistory';
-import chats from './features/chats';
 import  profile  from './features/profile';
 
 export const store = configureStore({
@@ -17,6 +16,5 @@ export const store = configureStore({
         search,
         citiesAndSpecializations,
         medicalHistory,
-        chats
     }
 });

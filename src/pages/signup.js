@@ -50,16 +50,16 @@ const SignUp = () => {
   return (
     <Container  className="min-vh-100 d-flex align-items-center">
       <Row className="g-0 justify-content-center w-100">
-        <Col md={6} className="d-none d-md-block">
+        <Col md={6} className="d-none d-md-flex align-items-center">
           <Image
             src="/images/signup_login.png"
             alt="Signup illustration"
             fluid
-            className="h-100 w-100 object-fit-cover"
+            className="h-70 w-100 object-fit-cover"
           />
         </Col>
         
-        <Col sm={12} md={6} lg={4} className="bg-light p-5">
+        <Col sm={12} md={6} lg={5} className="p-5">
           <div className="text-center mb-4">
             <Image
               src="/images/logo.png"
@@ -98,6 +98,7 @@ const SignUp = () => {
               <Form.Control
                 type="text"
                 placeholder="Full Name"
+                className='bg-white'
                 isInvalid={!!errors.name}
                 {...register('name', {
                   required: 'Full name is required',
@@ -117,6 +118,7 @@ const SignUp = () => {
             <Form.Group className="mb-3">
               <Form.Control
                 type="email"
+                className='bg-white'
                 placeholder="Email Address"
                 isInvalid={!!errors.email}
                 {...register('email', {
@@ -137,6 +139,7 @@ const SignUp = () => {
             <Form.Group className="mb-3">
               <Form.Control
                 type="tel"
+                className='bg-white'
                 placeholder="Phone Number (01XXXXXXXXX)"
                 isInvalid={!!errors.phone}
                 {...register('phone', {
@@ -158,6 +161,7 @@ const SignUp = () => {
               <Form.Control
                 type="password"
                 placeholder="Password"
+                className='bg-white'
                 isInvalid={!!errors.password}
                 {...register('password', {
                   required: 'Password is required',
@@ -224,6 +228,7 @@ const SignUp = () => {
               <Form.Control
                 type="date"
                 isInvalid={!!errors.birthDay}
+                className='bg-white'
                 {...register('birthDay', {
                   required: 'Birth date is required'
                 })}

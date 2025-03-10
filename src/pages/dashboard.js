@@ -1,8 +1,9 @@
+import { Navigate } from "react-router-dom";
+import { LOGIN } from "../constants/routes";
+
 function Dashboard() {
     return(
-        <main className="flex bg-red-500 w-20 h-20">
-            hello
-        </main>
+        <Navigate to={`/${LOGIN}`} />
     ); ;
 }
 

@@ -58,7 +58,7 @@ const doctors = [
         location: 'Jahan Street',
         specialization: 'bones',
         fees: 599,
-        imageURL : './images/avatars/team/25.png',
+        imageURL : '/images/avatars/team/25.jpg',
         rating: 4.3,
         appointmentTime:30
     },
@@ -563,7 +563,7 @@ const nurses = [
         id: 'kdfjsgscjkfdgfddfslk',
         name: 'Alaa Mohamed',
         email: 'mohamed@gmail.com',
-        description: 'He holds a PhD in Mansoura ',
+        description: 'loe dksj fdsjkl sdhkfs hsdkhklh sdhlkd',
         phone: '01012121212',
         city: 'Mansoura',
         governorate: 'Dakahlia',
@@ -615,7 +615,7 @@ const patients = [
         city: 'Mansoura',
         governorate: 'Dakahlia',
         phone: '01012121212',
-        imageURL : '/images/avatars/team/doctor-1.jpg',
+        imageURL : '/images/avatars/orwell.jpg',
         age: 30
     },
     {

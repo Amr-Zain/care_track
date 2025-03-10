@@ -7,7 +7,7 @@ function SearchPagination() {
     const search = useSelector( store => store.search );
     const [searchParams, setSearshParams ] = useSearchParams();
     const handlePageClick = (event) => {
-        setSearshParams({ ...Object.fromEntries(searchParams), page: event.selected})
+        setSearshParams({ ...Object.fromEntries(searchParams), page: event.selected});
     }
     return ( <div className='paginate'>
                 <ReactPaginate

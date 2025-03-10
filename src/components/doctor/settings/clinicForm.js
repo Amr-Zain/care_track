@@ -63,18 +63,7 @@ function ClinicForm() {
                 })}
                 error={errors.clinicPhone}
             />
-            <Input
-                type="text"
-                placeholder="Appointment Period in minutes"
-                register={register("appointmentPeriod", { 
-                    required: "Clinic Phone is required",
-                    pattern: {
-                    value: /^(1[5-9]|[2-5][0-9]|60)$/,
-                    message: "Invalid Period number should be between 15min to 60min"
-                    }
-                })}
-                error={errors.appointmentPeriod}
-            />
+            
             <Controller
                 name="city"
                 control={control}
