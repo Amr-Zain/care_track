@@ -1,1 +1,1 @@
-export const DEFAULT_IMG_URL = './images/avatars/default.png';
+export const DEFAULT_IMG_URL = '/images/avatars/default.png';

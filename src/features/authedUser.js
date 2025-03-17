@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createUser, createUserSession, getUser } from "../api/data";
 
 const initialState = {
-    user: JSON.parse(localStorage.getItem('user')) || {},
+    user:  JSON.parse(localStorage.getItem('user')) || {},
     error:'',
     isLoading:false,
 }
@@ -10,8 +10,8 @@ export const setAuthedUserThunk = createAsyncThunk('authedUser/setAuthedUser',
     async ({ create, user}, thunkAPI)=>{
     try {
         const fun = create? createUser: createUserSession;
-        let data = await fun(user);
-        return data;
+        const data = await fun(user);
+        return {user: data};
     } catch (error) {
         setError({error: error.message})
         return thunkAPI.rejectWithValue(error.message);
@@ -20,8 +20,8 @@ export const setAuthedUserThunk = createAsyncThunk('authedUser/setAuthedUser',
 export const getUserData = createAsyncThunk('authedUser/getUserData', 
     async ({ token, refreshToken }, thunkAPI)=>{
     try {
-        let data = await getUser({ token, refreshToken });
-        return data;
+        let data = await getUser();
+        return {user: data}
     } catch (error) {
         setError({error: error.message})
         return thunkAPI.rejectWithValue(error.message);
@@ -37,6 +37,9 @@ const authedUserSlice = createSlice({
         setError: (state, { payload}) =>{
             const { error } = payload;
             return { ...state, error}
+        },
+        setImage: (state,{ payload }) =>{
+            state.user.imageURL = payload.url;
         }
     },
     extraReducers:  (builder) => {
@@ -54,13 +57,13 @@ const authedUserSlice = createSlice({
                 state.error = payload;
             })
             .addCase(getUserData.fulfilled, (state, { payload }) => {
-                state.user = payload.user;
+                state.user = payload?.user||{};
                 state.isLoading = false;
                 //state = { ...payload, isLoading: false, error:''}
             })
     },
 });
 
-export const { setAuthedUser, removeAuthedUser, updateTokens, setError } = authedUserSlice.actions;
+export const { setAuthedUser, removeAuthedUser, setImage, updateTokens, setError } = authedUserSlice.actions;
 
 export default authedUserSlice.reducer;

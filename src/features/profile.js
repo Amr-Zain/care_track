@@ -1,27 +1,27 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {  createDoctorApointment, createNurseAppointment, getClinic, getProfileData, setAppointment } from "../api/data";
-import { DOCTOR } from "../constants/routes";
+import {  createApointment, getAppointmentsSlots, getProfileData, getClinics } from "../api/data";
+import { addAppointment } from "./appointments";
 
 
 
-const d = new Date(); 
 const initialState = {
     profileData:{ 
         isLoading: false,
         error:''
     },
     clinic:{
-        initShecheduleDate: new Date(d.getFullYear(),d.getMonth(),d.getDay(),9).getTime(),//that houre will be handled later in the backend
+        initShecheduleDate: null,
         appointmentTime: null,
         shecheduleDay:[],//
-        clinicId:null,
+        id:null,
         clinicName:'',
-        clinicLocation:'',
+        location:'',
         appointmentPeriod:0, //in minutes,
         isLoading: false, 
         error: ''
     },
     isLoading: false,
+    success: '',
     error:''
 }
 export const getProfile = createAsyncThunk('profile/getProfile', 
@@ -33,11 +33,19 @@ export const getProfile = createAsyncThunk('profile/getProfile',
         return thunkAPI.rejectWithValue(error.message);
     }
 });
+export const getDoctorClinics= createAsyncThunk('profile/getClinics',async(_,thunkAPI)=>{
+    try{
+        const clinics = await getClinics();
+        return {clinics};
+    }catch(error){
+        return thunkAPI.rejectWithValue(error.value)
+    }
+})
 export const getClinicAppointments = createAsyncThunk('profile/getClinicAppointments', 
     async ({ date, clinicId }, thunkAPI)=>{
     try {
-        const clinic = await getClinic({ clinicId, date });
-        return({ clinic })
+        const shecheduleDay = await getAppointmentsSlots({ clinicId, date });
+        return({ shecheduleDay })
     } catch (error) {
         return thunkAPI.rejectWithValue(error.message);
     }
@@ -45,12 +53,9 @@ export const getClinicAppointments = createAsyncThunk('profile/getClinicAppointm
 export const bookAppointment = createAsyncThunk('profile/bookAppointment', 
     async ({ type, date,clinicId, doctorId, nurseId }, thunkAPI)=>{
     try {
-        if(type ===DOCTOR)   {
-            return await createDoctorApointment({ date, clinicId, doctorId});
-            //add to the appointments slice
-        } 
-        else return await createNurseAppointment({ date, nurseId  });
-
+        const app = await createApointment({ date, clinicId, doctorId, nurseId, type});
+        thunkAPI.dispatch(addAppointment(app));
+        return app
     } catch (error) {
         return thunkAPI.rejectWithValue(error.message);
     }
@@ -71,6 +76,10 @@ const profile = createSlice({
         },
         setError:(state,{ payload })=>{
             state.error = payload;
+        },
+        setClinic:(state,{ payload })=>{
+            state.clinic = {appointmentTime:'',...payload.clinic
+                ,shecheduleDay:[], isLoading: false, error:'',initShecheduleDate: new Date().setHours(9,0,0,0) }
         }
 
     },
@@ -96,8 +105,9 @@ const profile = createSlice({
                 state.error ='';
             })
             .addCase(getClinicAppointments.fulfilled, (state, {payload}) => {
-                
-                state.clinic = {appointmentTime:'',...payload.clinic, isLoading: false, error:'' }
+                state.clinic.shecheduleDay = payload.shecheduleDay;
+                state.clinic.error ='';
+                state.clinic.isLoading = false;
             })
             .addCase(getClinicAppointments.rejected, (state, { payload}) => {
                 state.clinic.isLoading = false;
@@ -105,6 +115,7 @@ const profile = createSlice({
             })
             .addCase(bookAppointment.fulfilled, ( state,{ payload })=>{
                 state.isLoading = false;
+                state.success = 'Appointment created successfully.'
                 state.error = '';
             })
             .addCase(bookAppointment.pending, ( state,{ payload })=>{
@@ -115,11 +126,13 @@ const profile = createSlice({
                 state.isLoading = false;
                 state.error = payload;
             })
-            ;
+            .addCase(getDoctorClinics.fulfilled, ( state,{ payload })=>{
+                state.profileData.clinics = payload.clinics;
+            });
     },
 });
 
-export const { setClinicId, setInitShecheduleDate, setAppointmentTime, setError } = profile.actions
+export const { setClinicId, setInitShecheduleDate, setAppointmentTime, setError, setClinic } = profile.actions
 
 export default profile.reducer;
 

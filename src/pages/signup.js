@@ -5,47 +5,54 @@ import { Controller, useForm } from 'react-hook-form';
 import { Container, Row, Col, Form, Button, Image, Alert } from 'react-bootstrap';
 import Select from 'react-select';
 import { setAuthedUserThunk } from '../features/authedUser';
-import { LOGIN, DOCTOR } from '../constants/routes';
-import { getCitiesAndSpecializations } from '../features/cities-specializations';
+import { LOGIN } from '../constants/routes';
+import { calculateAge } from '../api/helper';
+import { userTypeOptions, cities } from '../api/api';
 
 const SignUp = () => {
   const { 
     register, 
     control, 
     handleSubmit, 
-    watch,
     formState: { errors } 
   } = useForm({
     defaultValues: {
-      userType: { label: 'Patient', value: 'patient' }
+      userType: { label: 'Patient', value: 'patient',id:1 }
     }
   });
   
   const navigate = useNavigate();
   const { error, isLoading, user } = useSelector((store) => store.authedUser);
-  const { cities, specializations } = useSelector((store) => store.citiesAndSpecializations);
   const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
+    console.log("data", data)
+
     dispatch(setAuthedUserThunk({ 
       create: true, 
       user: data 
     }));
   };
+  const validateBirthday = (birthdayString)=>{
+    const age = calculateAge(birthdayString);
+    const minAge = 13;
+    const maxAge = 120;
+    if (age > maxAge) {
+      return `You must be at most ${maxAge} years old.`;
+    }
 
+    if (age < minAge) {
+      return "Are you sure you are that old?";
+    }
+
+    return true;
+  }
   useEffect(() => {
     document.title = 'Sign Up';
     if (user.userType) navigate('/' + user.userType);
-    if (cities.length === 0 || specializations.length === 0) {
-      dispatch(getCitiesAndSpecializations());
-    }
-  }, [user, navigate, dispatch, cities, specializations]);
+  }, [user, navigate, dispatch]);
 
-  const userTypeOptions = [
-    { label: 'Patient', value: 'patient' },
-    { label: 'Doctor', value: 'doctor' },
-    { label: 'Nurse', value: 'nurse' },
-  ];
+  
 
   return (
     <Container  className="min-vh-100 d-flex align-items-center">
@@ -187,7 +194,7 @@ const SignUp = () => {
                   <>
                     <Select
                       {...field}
-                      options={cities}
+                      options={cities.slice(1)}
                       placeholder="Select City"
                       classNamePrefix="react-select"
                       className={error ? 'is-invalid' : ''}
@@ -199,38 +206,14 @@ const SignUp = () => {
                 )}
               />
             </Form.Group>
-
-            {watch('userType')?.value === DOCTOR && (
-              <Form.Group className="mb-3">
-                <Controller
-                  name="specialization"
-                  control={control}
-                  rules={{ required: "Specialization is required" }}
-                  render={({ field, fieldState: { error } }) => (
-                    <>
-                      <Select
-                        {...field}
-                        options={specializations}
-                        placeholder="Select Specialization"
-                        classNamePrefix="react-select"
-                        className={error ? 'is-invalid' : ''}
-                      />
-                      {error && (
-                        <Form.Text className="text-danger">{error.message}</Form.Text>
-                      )}
-                    </>
-                  )}
-                />
-              </Form.Group>
-            )}
-
             <Form.Group className="mb-4">
               <Form.Control
                 type="date"
                 isInvalid={!!errors.birthDay}
                 className='bg-white'
                 {...register('birthDay', {
-                  required: 'Birth date is required'
+                  required: 'Birth date is required',
+                  validate: validateBirthday,
                 })}
               />
               {errors.birthDay && (

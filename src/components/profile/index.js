@@ -7,24 +7,23 @@ import "react-datepicker/dist/react-datepicker.css";
 import ResultCard from "../patient/search/result-card";
 import AppPicker from "../doctor-schedule/appointment-picker";
 import { useDispatch, useSelector } from "react-redux";
-import { bookAppointment, getProfile, setAppointmentTime, setClinicId, setError, setInitShecheduleDate } from "../../features/profile";
+import { bookAppointment, getProfile, setAppointmentTime, setClinic, setError, setInitShecheduleDate } from "../../features/profile";
 import { DOCTOR, NURSE, PATIENT } from "../../constants/routes";
 import '../../style/search.css'
 import { toast } from "react-toastify";
 function Profile() {
     const dispatch = useDispatch();
-    const { profileData, clinic: { clinicId, initShecheduleDate, appointmentTime }, isLoading, error } = useSelector(state => state.profile);
+    const { profileData, clinic: { id:clinicId, initShecheduleDate, appointmentTime }, isLoading, error } = useSelector(state => state.profile);
     const { userType, id } = useParams();
     const { userType: authedUserType } = useSelector(state => state.authedUser.user)
-
     const changeClinicHandler = (item) => {
         if (clinicId !== item.id)
-            dispatch(setClinicId({ clinicId: item.id }))
+            dispatch(setClinic({ clinic: item }))
     }
 
     const dateChangeHandler = (initDate) => {
-        const d = new Date(initDate)
-        const date = new Date(d.getFullYear(),d.getMonth(),d.getDay(),9).getTime();
+        const date = new Date(initDate);
+        date.setHours(9,0,0,0);
         if (userType === NURSE) dispatch(setAppointmentTime({ appointmentTime: date}))
         dispatch(setInitShecheduleDate({ initDate: date }))
     }
@@ -36,11 +35,16 @@ function Profile() {
             dispatch(setError(message))
             return;
         }
-        toast.promise(dispatch(bookAppointment({ date: appointmentTime, type: userType, doctorId: id, nurseId: id, clinicId })),
+        await toast.promise(dispatch(bookAppointment({ date: appointmentTime, type: userType, doctorId: id, nurseId: id, clinicId })).unwrap(),
         {
             pending:'Booking The Appointment...',
-            error: error || 'Something Went Wrong, Please Try Again.',
-            success:'The Appointment Booked Successfully.'
+            success:'The Appointment Booked Successfully.',
+            error: {
+                render({ data }) {
+                    console.log("Toast error data:", data); 
+                    return data?.payload || 'Something Went Wrong, Please Try Again.';
+                }
+            }
         }
     )
     }

@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
-import { Col, Card } from 'react-bootstrap';
+import { useEffect } from "react";
+import { Col, Card, Alert } from 'react-bootstrap';
 import { AppointmentPicker } from "react-appointment-picker";
 import { useDispatch, useSelector } from "react-redux";
 import { getClinicAppointments, setAppointmentTime } from "../../features/profile";
+import { parseDateTime } from "../../api/helper";
 
 function AppPicker() {
-    const { 
-        shecheduleDay, 
-        clinicLocation, 
-        initShecheduleDate, 
-        clinicId, 
-        appointmentPeriod, 
-        isLoading, 
-    } = useSelector(state => state.profile.clinic);
-    const [widthMatchs, setWidth] = useState(false);
+    const {
+        clinic:{ 
+            shecheduleDay, 
+            location, 
+            initShecheduleDate, 
+            id,  
+            isLoading, 
+    },
+    profileData:{appointmentTime:appointmentPeriod}
+} = useSelector(state => state.profile);
 
     const dispatch = useDispatch();
 
@@ -25,44 +27,39 @@ function AppPicker() {
     }) => {
         if(removeCb) removeCb(params.day, params.number);
         addCb(day, number, time, id);
-        const date = new Date(`${day} ${time}`).getTime();
+        const date = parseDateTime(day, time)
+        console.log(date)
         dispatch(setAppointmentTime({ appointmentTime: date }));
     };
     const removeAppointmentCallback = ({ day, number }, removeCb) => {
         removeCb(day, number);
     };
-    useEffect(()=>{
-        const handleResize = () => setWidth(window.innerWidth<768);
-        window.addEventListener('resize', handleResize);
-        handleResize();
-        return () => window.removeEventListener('resize', handleResize);
-    },[])
+   
     useEffect(() => {
-        if(clinicId){
-            dispatch(getClinicAppointments({ date: initShecheduleDate, clinicId }));
+        if(id && initShecheduleDate){
+            dispatch(getClinicAppointments({ date: new Date(initShecheduleDate).getTime(), clinicId:id }));
         }
-    }, [clinicId, initShecheduleDate, dispatch]);
-
+    }, [id, initShecheduleDate,location, dispatch]);
     return (
                 <Col xs={12}>
 
-                    {clinicLocation && !isLoading && (
+                    {location && !isLoading && (
                         <Card className="mb-3 shadow-sm">
                             <Card.Body className="py-2">
                                 <h5 className="mb-0 text-center text-primary">
-                                    {clinicLocation}
+                                    {location}
                                 </h5>
                             </Card.Body>
                         </Card>
                     )}
-
+                    {shecheduleDay.every(day=>!day.length) && id && <Alert variant="danger" className="text-center">This Clinic Has No Schedule For This Range try Other Date</Alert> }
                     <div className="d-flex justify-content-center mt-3">
                         <AppointmentPicker
                             addAppointmentCallback={addAppointmentCallback}
                             removeAppointmentCallback={removeAppointmentCallback}
                             initialDay={new Date(initShecheduleDate)}
                             unitTime={appointmentPeriod * 60 * 1000}
-                            days={shecheduleDay.slice(0,widthMatchs?3:shecheduleDay.length)}
+                            days={shecheduleDay}
                             className="appointment-picker-with-offset"
                             maxReservableAppointments={1}
                             local="en-IN"

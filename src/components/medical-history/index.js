@@ -8,7 +8,7 @@ import AddDiagnosis from "./add-diagnosis";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Tab, Tabs } from "react-bootstrap";
 import '../../style/medical-history.css'
-import { PATIENT } from "../../constants/routes";
+import { DOCTOR } from "../../constants/routes";
 
 const tabs = [
     { id: 'diagnosis', label: 'Diagnosis' },
@@ -17,12 +17,12 @@ const tabs = [
 ];
 
 export default function MedicalHistoryComponents() {
-    const { id,userType } = useSelector(store => store.authedUser.user);
+    const { id:userId,userType } = useSelector(store => store.authedUser.user);
     const { patientId } = useParams();
     const [searchParams,setSearchParams] = useSearchParams()
     const initialKey = tabs.find(t => t.id === searchParams.get('tab'))?.id || 'diagnosis';
     const [key, setKey] = useState(initialKey);
-    const ID = patientId ? patientId : id;
+    const id = patientId ? patientId : userId;
 
     const handleSelect = (k) => {
         setKey(k);
@@ -31,7 +31,7 @@ export default function MedicalHistoryComponents() {
 
     return (
         <>
-            <PatientInfo patientId={ID} />
+            <PatientInfo patientId={id} />
             <Tabs
                 id="medical-history-tabs"
                 activeKey={key}
@@ -39,13 +39,13 @@ export default function MedicalHistoryComponents() {
                 className="my-5 bg-white shadow-sm m-2 border rounded"
             >
                 <Tab eventKey="diagnosis" title="Diagnosis">
-                    <DiagnosisList patientId={ID} />
+                    <DiagnosisList patientId={id} />
                 </Tab>
                 <Tab eventKey="medicines" title="Medicines">
-                    <Medicines patientId={ID} />
+                    <Medicines patientId={id} />
                 </Tab>
-                {userType!==PATIENT&&<Tab eventKey="add-diagnosis" title={<span><MdAdd aria-hidden="true" /> Add Diagnosis</span>}>
-                    <AddDiagnosis patientId={ID} onSuccess={() => setKey('diagnosis')} />
+                {userType===DOCTOR&&<Tab eventKey="add-diagnosis" title={<span><MdAdd aria-hidden="true" /> Add Diagnosis</span>}>
+                    <AddDiagnosis patientId={id} onSuccess={() => setKey('diagnosis')} />
                 </Tab>}
                 
             </Tabs>

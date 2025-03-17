@@ -19,12 +19,12 @@ export const RECEPTIONIST = 'receptionist';
 
 
 //FOR ALL
-export const DASHBOARD = '/'; 
 export const LOGIN = 'login'; 
 export const SIGNUP = 'signup'; 
 export const PROFILE = 'profile'; 
 export const NOT_FOUND = 'not_found'; 
 
+export const DASHBOARD ='dashboard'; 
 export const BLOOD_BANK = 'blood_bank';
 export const BLOOD_DONATION = 'blood_donation';
 export const DONATION_REQUEST = 'donation_request';

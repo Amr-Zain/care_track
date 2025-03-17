@@ -11,12 +11,12 @@ function App() {
   const { user } = useSelector(state => state.authedUser); 
   
 useEffect(()=>{
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('accessToken'); 
   const refreshToken = localStorage.getItem('refreshToken'); 
   if (token && !Object.keys(user).length) { 
       dispatch(getUserData({token, refreshToken}))
   } 
-},[])
+},[dispatch, user])
 
   return(
         <Suspense fallback={<h3>Loading</h3>}>

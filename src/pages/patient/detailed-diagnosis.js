@@ -5,19 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import Diagnosis from "../../components/medical-history/diagnosis";
 import Medicines from "../../components/medical-history/medicines";
 import { getDiagnosis, selectDiagnosisById } from "../../features/medicalHistory";
+import { PATIENT } from "../../constants/routes";
 
 function DetailedDiagnosis() {
     const { diagnosisId, patientId } = useParams();
+    const { userType,id:userId } = useSelector(state=>state.authedUser.user)
     const diagnosis = useSelector(selectDiagnosisById(diagnosisId));
     const { isLoading, error } = useSelector(state => state.medicalHistory.diagnosis);
     const dispatch = useDispatch();
-
+    const id = userType ===PATIENT ? userId: patientId;
     useEffect(() => {
         document.title = 'Diagnosis Details';
-        if (!diagnosis) {
-            dispatch(getDiagnosis({ type: 'diagnosis', diagnosisId, patientId }));
-        }
-    }, [diagnosisId, patientId, dispatch, diagnosis]);
+        if(!diagnosis) dispatch(getDiagnosis({ type: 'diagnosis', diagnosisId, patientId:id }));
+    }, [diagnosisId, patientId, dispatch, diagnosis, id]);
 
     if (isLoading) {
         return (
@@ -53,8 +53,8 @@ function DetailedDiagnosis() {
             <Row className="justify-content-center">
                 <Col lg={10} xl={8}>
                     <Diagnosis {...diagnosis} isPage>
-                        {diagnosis?.medicine?.length !== 0 ? (
-                            <Medicines medicines={diagnosis.medicine} isDiagnosis />
+                        {diagnosis?.medicines?.length !== 0 ? (
+                            <Medicines medicines={diagnosis.medicines} diagnosisId={diagnosisId}  patientId={diagnosis.patientId} />
                         ) : (
                             <p className="text-muted text-center mb-0">
                                 No prescribed medications found

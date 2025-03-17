@@ -44,4 +44,19 @@ p , h1,h2,h3,h4,h5,h6{
 .underline-pointer:hover {
     cursor: pointer;
     text-decoration: underline;
+}
+.appointment-picker{
+    align-items: start !important;
+}
+
+.appointment-picker> *:not(:nth-child(-n+3)) {
+    display: none;
+}
+.appointment-picker__col > *:only-child {
+    display: none;
+}
+@media (min-width: 768px) {
+    .appointment-picker> *:not(:nth-child(-n+3)) {
+        display: block;
     }
+}

@@ -1,28 +1,27 @@
-import { useEffect, useState } from "react";
+import { memo } from "react";
 import { FaUserMd } from "react-icons/fa";
 import { MdSchedule } from "react-icons/md";
-import { getTotal, getTotalPatientsCount } from "../../../api/data";
+import { Card } from "react-bootstrap";
 
-function Info({ isTotal }) {
-    const [count, setCount] = useState(0)
-    useEffect(()=>{
-            (async()=>{
-                const value = await getTotal(isTotal);
-                console.log(value)
-                setCount(value);
-            })();
-    },[])
-    return (   
-            <div style={{display:'flex', alignItems:'center'}}>
-                <div style={{color:'var(--main-blue-vesion2)',fontSize:'10rem'}}>
-                    {isTotal?<FaUserMd />:<MdSchedule />}
+function Info({ isTotal, count }) {
+   
+    return (
+        <Card className="h-100 shadow-sm p-4 bg-white">
+            <div className="d-flex align-items-center gap-4">
+                <div className="text-primary" style={{ fontSize: '5rem' }}>
+                    {isTotal ? <FaUserMd /> : <MdSchedule />}
                 </div>
-                <div>
-                    <h3>{isTotal?'Total Patients':'Today Appointments'}</h3>
-                    <span>{count}</span>
+                <div className="flex-fill" style={{maxWidth:'fit-content'}}>
+                    <h5 className="text-muted mb-2">
+                        {isTotal ? 'Total Patients' : 'Today Appointments'}
+                    </h5>
+                    <div className="display-5 fw-bold text-center">
+                        { count }
+                    </div>
                 </div>
             </div>
-        );
+        </Card>
+    );
 }
 
-export default Info;
+export default memo(Info);

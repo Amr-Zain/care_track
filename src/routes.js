@@ -1,10 +1,11 @@
-import { createBrowserRouter, Outlet } from "react-router-dom";
-import { APPOINTMENTS, BLOOD_BANK, BLOOD_DONATION, BLOOD_REQUEST, DOCTOR, LOGIN, MEDICAL_HISTORY, NURSE, PATIENT, PROFILE, RECEPTIONIST, SEARCH, SIGNUP, UNAUTHORIZED, SETTINGS, DETAILED_DIAGNOSIS } from "./constants/routes";
+import { createBrowserRouter } from "react-router-dom";
+import { APPOINTMENTS, BLOOD_BANK, BLOOD_DONATION, BLOOD_REQUEST, DOCTOR, LOGIN, MEDICAL_HISTORY, 
+    NURSE, PATIENT, PROFILE, SEARCH, SIGNUP, SETTINGS, DETAILED_DIAGNOSIS } from "./constants/routes";
 import { lazy } from "react";
 
 
 import PatientSharedLayout from "./pages/patient/shared-layout";
-import DoctorSharedLayout from "./pages/doctor/shared";
+import SharedLayout from "./pages/doctor-nurse/shared";
 
 
 import ProtectedRoute from "./routes-components/protected-route";
@@ -28,24 +29,47 @@ const DetailedDiagnosis = lazy(() => import('./pages/patient/detailed-diagnosis'
 
 const Dashboard = lazy(() => import('./pages/dashboard'));
 
-const DoctorDashboard = lazy(() => import('./pages/doctor/dashboard'));
-const DoctorAppointments =lazy(()=> import("./pages/doctor/appointments"));
-const Settings = lazy(()=>import("./pages/doctor/settings"));
+const DoctorNurseDashboard = lazy(() => import('./pages/doctor-nurse/dashboard'));
+const DoctorNurseAppointments =lazy(()=> import("./pages/doctor-nurse/appointments"));
+const DoctorNurseSettings = lazy(()=>import("./pages/doctor-nurse/settings"));
 
-const NurseDashboard = lazy(() => import('./pages/nurse/dashboard'));
 
-const ReceptionistDashboard = lazy(() => import('./pages/receptionist/dashboard'));
 
-const Profile = lazy(()=>import("./pages/profile"));
+const Profile = lazy(()=>import("./pages/doctor-nurse/profile"));
 
 
 
 const SharedLayoutForRoles = ()=>{
     const {userType} = useSelector(state=>state.authedUser.user);
     if(userType === PATIENT ) return <PatientSharedLayout />
-    //we will see the other roles later this will be used for profile only 
-    return ;    
+    return <SharedLayout />;    
 }
+
+
+const createDoctorNurseRoute = (path,roles) => ({
+    path: path,
+    element: (
+        <ProtectedRoute allowedRoles={roles}>
+            <SharedLayout />
+        </ProtectedRoute>
+    ),
+    children: [
+        {
+            index: true,
+            element: <DoctorNurseDashboard />,
+        },
+        {
+            path: APPOINTMENTS,
+            element: <DoctorNurseAppointments />,
+        },
+        {
+            path: SETTINGS,
+            element: <DoctorNurseSettings />,
+        },
+    ],
+});
+
+
 const router = createBrowserRouter([
     {
         path: '/',
@@ -82,7 +106,7 @@ const router = createBrowserRouter([
     },
     {
         path:`/${MEDICAL_HISTORY}`,
-        element: <ProtectedRoute allowedRoles={[DOCTOR]} />,
+        element: <SharedLayout><ProtectedRoute allowedRoles={[DOCTOR]} /></SharedLayout>,
         children: [
             {
                 path: `:patientId`,
@@ -101,43 +125,19 @@ const router = createBrowserRouter([
     },
     {
         path: '/'+PROFILE + '/:userType/:id',
-        element: <ProtectedRoute allowedRoles={[PATIENT, DOCTOR, NURSE, RECEPTIONIST]}>
-                        <SharedLayoutForRoles />
+        element: <ProtectedRoute allowedRoles={[PATIENT, DOCTOR, NURSE]}>
+                    <SharedLayoutForRoles />
                 </ProtectedRoute>,
         children:[{ index:true,element: <Profile />}]
     },
-    {
-        path: '/'+DOCTOR,
-        element: <ProtectedRoute allowedRoles={[DOCTOR]}><DoctorSharedLayout /></ProtectedRoute>,
-        children: [
-            { 
-                index: true,
-                element: <DoctorDashboard /> 
-            },
-            {
-                path: APPOINTMENTS,
-                element:<DoctorAppointments />
-            },
-            {
-                path: SETTINGS,
-                element:<Settings />
-            },
-        ]
-    },
-    {
-        path: '/'+NURSE,
-        element: <ProtectedRoute allowedRoles={[NURSE]} />,
-        children: [{ index: true, element: <NurseDashboard /> }]
-    },
-    {
-        path: '/'+RECEPTIONIST,
-        element: <ProtectedRoute allowedRoles={[RECEPTIONIST,DOCTOR]} />,
-        children: [{ index: true, element: <ReceptionistDashboard /> }]
-    },
+    createDoctorNurseRoute(`/${DOCTOR}`,[DOCTOR]),
+    createDoctorNurseRoute(`/${NURSE}`,[NURSE]),
+    
     {
         path: '*',
         element: <NotFoundOrUnauthorized />
     } 
 ]);
+
 
 export default router;

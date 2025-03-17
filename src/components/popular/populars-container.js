@@ -18,7 +18,7 @@ const PopulersContainer = ({ DoctorsOrNurses, isLoading, type }) => {
                         </div>
                     ) : (
                         DoctorsOrNurses.map(items => (
-                            <Abstract key={items.id} {...items} />
+                            <Abstract key={items?.clinicId||items.id} {...items} />
                         ))
                     )}
                 </Row>

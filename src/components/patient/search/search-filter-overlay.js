@@ -1,4 +1,4 @@
-import { Offcanvas, Button } from 'react-bootstrap';
+import { Offcanvas } from 'react-bootstrap';
 import SearchFilter from "./search-filter";
 import SearchSection from './search-bar';
 import { createPortal } from 'react-dom';
@@ -18,8 +18,8 @@ function SearchFilterOverlay({ setOverlay }) {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <div className="d-flex flex-column gap-3">
-                        <SearchSection removeOverlay={() => setOverlay(false)} />
-                        <SearchFilter overlay={true} />
+                        <SearchSection isOverlay removeOverlay={() => setOverlay(false)} />
+                        <SearchFilter overlay />
                     </div>
                 </Offcanvas.Body>
             </Offcanvas>

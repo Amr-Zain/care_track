@@ -1,7 +1,7 @@
 import { Card, Col, Row, Spinner } from "react-bootstrap"; // Added import
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPatientInfo } from "../../features/medicalHistory";
+import { getPatientInfo } from "../../features/patient";
 import { DEFAULT_IMG_URL } from "../../constants/default";
 import { PATIENT } from "../../constants/routes";
 
@@ -10,16 +10,14 @@ function PatientInfo({ patientId }) {
         data: { image, name, age },
         isLoading,
         error
-    } = useSelector(store => store.medicalHistory.patientInfo);
+    } = useSelector(state => state.patient);
     const { user } = useSelector(store=>store.authedUser)
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if(user.userType === PATIENT){
-            return;
-        }
+        if(user.userType === PATIENT) return;
         dispatch(getPatientInfo({ patientId }));
-    }, [dispatch, patientId]);
+    }, [dispatch, patientId, user.userType]);
 
     if (isLoading) {
         return (

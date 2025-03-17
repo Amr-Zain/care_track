@@ -6,6 +6,7 @@ import { Container, Row, Col, Form, Button, Image, Alert } from 'react-bootstrap
 import Select from 'react-select';
 import { setAuthedUserThunk } from '../features/authedUser';
 import { SIGNUP } from '../constants/routes';
+import { userTypeOptions } from '../api/api';
 
 const Login = () => {
 const { register, control, handleSubmit, formState: { errors } } = useForm();
@@ -14,7 +15,6 @@ const { error, isLoading, user } = useSelector((store) => store.authedUser);
 const dispatch = useDispatch();
 
 const onSubmit = async (data) => {
-    console.log(data);
     dispatch(setAuthedUserThunk({ create: false, user: data }));
 };
 
@@ -23,12 +23,6 @@ useEffect(() => {
     if (user.userType) navigate('/' + user.userType);
 }, [user, navigate]);
 
-const userTypeOptions = [
-    { label: 'Patient', value: 'patient' },
-    { label: 'Doctor', value: 'doctor' },
-    { label: 'Nurse', value: 'nurse' },
-    { label: 'Receptionist', value: 'receptionist' }
-];
 
 return (
     <Container>
@@ -38,11 +32,11 @@ return (
             src="./images/signup_login.png"
             alt="Login illustration"
             fluid
-            className="w-100"
+            className="mt-4"
         />
         </Col>
         
-        <Col sm={10} md={6} lg={5}  className="bg-light p-5">
+        <Col sm={10} md={6} lg={5}  className="bg-light p-3">
         <div className="text-center mb-4">
             <Image
             src="./images/logo.png"

@@ -20,7 +20,7 @@ const Appointments = ({ isAppPage }) => {
 
   useEffect(() => {
     if(!appointments.length)dispatch(getAppointments({ date: null }));
-  }, [dispatch]);
+  }, [appointments.length, dispatch]);
 
   const renderAppointmentsList = () => {
     if (isLoading) {
@@ -35,7 +35,7 @@ const Appointments = ({ isAppPage }) => {
 
     if (error) {
       return (
-        <Alert variant="danger" className="mt-4 text-center">
+        <Alert variant="danger" className="m-5 p-5 text-center">
           Error: {error}. Please try again later.
         </Alert>
       );
@@ -43,14 +43,14 @@ const Appointments = ({ isAppPage }) => {
 
     if (appointments.length === 0) {
       return isAppPage && (
-        <div className="no-appointments text-center m-5">
+        <div className="no-appointments text-center m-5 p-5">
           There Are No Upcoming Appointments
         </div>
       );
     }
 
     return (
-      <Row className={`${!isAppPage ? "flex-nowrap" : "justify-content-center justify-content-sm-start "}`}>
+      <Row className={`${!isAppPage ? "flex-nowrap" : "justify-content-center justify-content-center "}`}>
         {appointments.map((app) => (
           <Appointment key={app.id} {...app} setOverlay={updateOverlay} />
         ))}

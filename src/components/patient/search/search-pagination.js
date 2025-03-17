@@ -1,13 +1,16 @@
 import ReactPaginate from 'react-paginate';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs';
 import { useSearchParams } from 'react-router-dom';
+import { setFilter } from '../../../features/search';
 
 function SearchPagination() {
     const search = useSelector( store => store.search );
+    const dispatch = useDispatch()
     const [searchParams, setSearshParams ] = useSearchParams();
     const handlePageClick = (event) => {
-        setSearshParams({ ...Object.fromEntries(searchParams), page: event.selected});
+        dispatch(setFilter({page: event.selected+1}))
+        setSearshParams({ ...Object.fromEntries(searchParams), page: event.selected+1});
     }
     return ( <div className='paginate'>
                 <ReactPaginate

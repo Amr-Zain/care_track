@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { bloodType } from '../../constants/utilites'
+import {  useState } from "react";
+import { useSelector } from "react-redux";
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { getCitiesAndSpecializations } from "../../features/cities-specializations";
-import { PostDonation, PostBloodRequest } from "../../api/data";
+import { cities, bloodTypes } from '../../api/api'
+import { PostDonation } from "../../api/data";
 import { Button, Spinner,Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 function BloodBankForm({ isRequest }) {
-    const { cities } = useSelector(store => store.citiesAndSpecializations);
-    const dispatch = useDispatch();
     const { city } = useSelector(store => store.authedUser.user);
     const [formState, setFormState] = useState({ 
         bloodType: null, 
@@ -31,52 +28,30 @@ function BloodBankForm({ isRequest }) {
     const submit = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
-
         setIsLoading(true);
-        
         try {
-            if(isRequest){
-                await toast.promise(
-                    PostBloodRequest({ 
-                        bloodType: formState.bloodType.value,
-                        city: formState.city.value,
-                        date: formState.date
-                    }),
-                    {
-                        pending: 'Creating blood request...',
-                        success: 'Blood request created successfully!',
-                        error: {
-                            render({ data }) {
-                                return data?.message || 'Failed to create blood request';
-                            }
+            await toast.promise(
+                PostDonation({ 
+                    isRequest,
+                    bloodType: formState.bloodType.value,
+                    city: formState.city.value,
+                    date: new Date(formState.date).getTime()
+                }),
+                {
+                    pending: isRequest?'Creating blood request...': 'Creating Blood Donation Request...',
+                    success: 'Blood request created successfully!',
+                    error: {
+                        render({ data }) {
+                            return data?.message || isRequest?'Failed to create blood request' :'Failed to create blood request';
                         }
-                    });}
-            else{
-                await toast.promise(
-                    PostDonation({ 
-                        bloodType: formState.bloodType.value,
-                        city: formState.city.value,
-                        date: formState.date
-                    }),
-                    {
-                        pending: 'Creating Blood Donation Request...',
-                        success: 'Blood Donation Created Successfully!',
-                        error: {
-                            render({ data }) {
-                                return data?.message || 'Failed to create blood request';
-                            }
-                        }
-                    });
-            }
+                    }
+                });
         } catch (error) {
             console.error('Submission error:', error);
         } finally {
             setIsLoading(false);
         }
     };
-    useEffect(()=>{
-        if(cities.length === 0)dispatch(getCitiesAndSpecializations('cities'))
-    },[ ]);
     return (  <Form onSubmit={submit} className="border p-4 rounded-3 shadow-sm bg-white">
         <h2 className="mb-4 text-center">{isRequest?'Donation Request':'Blood Donation'} </h2>
 
@@ -94,7 +69,7 @@ function BloodBankForm({ isRequest }) {
 
         <Form.Group className="mb-4">
             <Select
-                options={bloodType}
+                options={bloodTypes}
                 placeholder="Select Blood Type"
                 onChange={(item) => setFormState(prev => ({ ...prev, bloodType: item }))}
                 classNamePrefix="react-select"

@@ -5,15 +5,15 @@ import { search } from "../api/data";
 const initialState ={
     filter:{
         searchFor: 'doctor',
-        city:'',
+        city:'all',
         specialization:'',
         bloodType: '',
         name: '',
-        sort:'0',
-        gender:'0',
-        availability: 0,
+        sort:'1',
+        gender:'2',//any
+        availability: 2,
         page:0,
-        limit:10
+        limit:6
     },
     result:{
         data:[], 

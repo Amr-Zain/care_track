@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, Spinner, Alert } from "react-bootstrap";
-import { getMedicines } from '../../features/medicalHistory';
+import { getDiagnosisMedicines, getMedicines } from '../../features/medicalHistory';
 
 
 
@@ -9,7 +9,7 @@ const MedicineMap = (medicines) => {
   return medicines.map(med => (
     <tr key={med.id} className="medicine">
       <td className="medicine-name medicine-mobile-sm">{med.name}</td>
-      <td className="dose medicine-mobile-sm">{med.dose}, duration:{med.duration}</td> 
+      <td className="dose medicine-mobile-sm">{med.dosage} {+med.dosage ===1?'Time':'Times'} , duration:{med.duration} days</td> 
       <td className="date medicine-mobile-sm">
         {new Date(med.date).toLocaleString('en-GB', {
           day: '2-digit',
@@ -21,19 +21,22 @@ const MedicineMap = (medicines) => {
   ));
 };
 
-export default function Medicines({ patientId, isDiagnosis, medicines: DiagnosisMedicines }) {
+export default function Medicines({ patientId, diagnosisId, medicines: DiagnosisMedicines }) {
     const dispatch = useDispatch();
     const { data: medicines, isLoading, error } = useSelector(store => store.medicalHistory.medicines);
-
-    const medicinesList = isDiagnosis && DiagnosisMedicines 
+    console.log(DiagnosisMedicines)
+    const medicinesList = !!diagnosisId && DiagnosisMedicines 
         ? MedicineMap(DiagnosisMedicines)
         : MedicineMap(medicines);
 
     useEffect(() => {
-        if (!DiagnosisMedicines && !isDiagnosis && medicines.length === 0) {
+        if (!DiagnosisMedicines && !diagnosisId && medicines.length === 0) {
             dispatch(getMedicines({ patientId }));
+        }else if(!DiagnosisMedicines && !!diagnosisId){
+            dispatch(getDiagnosisMedicines({ patientId, diagnosisId}))
         }
-    }, [patientId, isDiagnosis, dispatch, DiagnosisMedicines, medicines.length]);
+
+    }, [patientId, diagnosisId, dispatch, DiagnosisMedicines, medicines.length]);
 
     if (isLoading) {
         return (

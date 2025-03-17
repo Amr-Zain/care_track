@@ -2,22 +2,19 @@ import { useSelector } from "react-redux";
 import RadioGroup from "./radio-group";
 
 const GENDER_OPTIONS = [
-    { id: 'anyGend', value: '0', label: 'Any' },
-    { id: 'male', value: '1', label: 'Male' },
-    { id: 'female', value: '2', label: 'Female' },
+    { id: 'anyGend', value: '2', label: 'Any' },
+    { id: 'male', value: '0', label: 'Male' },
+    { id: 'female', value: '1', label: 'Female' },
 ];
 
 const AVAILABILITY_OPTIONS = [
-    { id: 'anyAval', value: '0', label: 'Any' },
-    { id: 'today', value: '1', label: 'Today' },
-    { id: 'tomorrow', value: '2', label: 'Tomorrow' },
+    { id: 'anyAval', value: '2', label: 'Any' },
+    { id: 'today', value: '0', label: 'Today' },
+    { id: 'tomorrow', value: '1', label: 'Tomorrow' },
 ];
 
 function SearchFilter({ overlay }) {
     const { searchFor, gender, availability } = useSelector(store => store.search.filter);
-
-
-    
 
     return (
         <aside>

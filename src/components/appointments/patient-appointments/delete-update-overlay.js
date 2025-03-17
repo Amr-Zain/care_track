@@ -25,34 +25,34 @@ function DeleteUpdateModal({
     try {
       if (type === 'delete') {
         await toast.promise(
-          dispatch(cancelAppointment({ id })),
+          dispatch(cancelAppointment({ id })).unwrap(),
           {
             pending: 'Canceling appointment...',
             success: 'Appointment canceled successfully!',
             error: {
               render({data}) {
-                return data?.message || 'Failed to cancel appointment';
+                return data||'Failed to cancel appointment';
               }
             }
           }
         );
       } else if (type === 'update') {
         await toast.promise(
-          dispatch(updateAppointment({ id, date })),
+          dispatch(updateAppointment({ id, date })).unwrap(),
           {
             pending: 'Updating appointment...',
             success: 'Appointment updated successfully!',
             error: {
               render({data}) {
-                return data?.message || 'Failed to update appointment';
+                return data||'Failed to update appointment';
               }
             }
           }
         );
       }
       handleClose();
-    } catch (err) {
-      toast.error(err.message || 'An error occurred');
+    } catch (error) {
+      toast.error(error || 'An error occurred');
     }
   };
 

@@ -8,8 +8,8 @@ function Populers() {
     const { doctors, nurses, isLoading }  = useSelector(state=>state.populars)
     const dispatch = useDispatch();
     useEffect(()=>{
-        if(doctors.length ===0)dispatch(getPopulars());
-    });
+        dispatch(getPopulars());
+    },[dispatch, doctors.length]);
     return ( 
             <>
                 <PopulersContainer DoctorsOrNurses={doctors} isLoading={isLoading} type={'Doctors'} />

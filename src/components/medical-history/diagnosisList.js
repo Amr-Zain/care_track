@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Form, Button, Spinner, Alert, Card } from "react-bootstrap";
-import { getDiagnosis, changeFilterCategory, setFilterByDoctor, setFilterDate } from '../../features/medicalHistory';
+import { getDiagnosis, changeFilterCategory, 
+    setFilterByDoctor, setFilterDate } from '../../features/medicalHistory';
 import Diagnosis from "./diagnosis";
 import Select from 'react-select';
 import { FiSearch } from "react-icons/fi";
@@ -34,10 +35,8 @@ export default function DiagnosisList({ patientId }) {
     }
 
     useEffect(() => {
-        if (patientDiagnosisCategories.length === 0) {
-            dispatch(getDiagnosis({ type: 'categories', patientId: null, diagnosisId: null }));
-        }
-    }, [dispatch, patientDiagnosisCategories.length]);
+        dispatch(getDiagnosis({ type: 'categories', patientId, diagnosisId: null }));
+    }, [dispatch, patientDiagnosisCategories.length, patientId]);
 
     const renderDiagnosis = () => {
         if (isLoading) {
@@ -81,7 +80,7 @@ export default function DiagnosisList({ patientId }) {
                                         selectedCategories.includes(option.label)
                                     )}
                                     classNamePrefix="react-select"
-                                    placeholder="Select specializations..."
+                                    placeholder="Specializations..."
                                 />
                             </Form.Group>
                         </Col>
@@ -94,7 +93,7 @@ export default function DiagnosisList({ patientId }) {
                                     onChange={(item) => dispatch(setFilterDate({ date: item.value }))}
                                     value={dates.find(option => date === option.value)}
                                     classNamePrefix="react-select"
-                                    placeholder="Select time range..."
+                                    placeholder="time range..."
                                 />
                             </Form.Group>
                         </Col>
@@ -110,8 +109,6 @@ export default function DiagnosisList({ patientId }) {
                                 </Form.Group>
                             </Col>
                         )}
-
-                        {/* Search Button */}
                         <Col xs={12} md={6} lg={3}>
                         <Button 
                                 variant="primary" 
@@ -141,6 +138,11 @@ export default function DiagnosisList({ patientId }) {
                     </Row>
                 </Card.Body>
             </Card>
+            {!diagnosis.length &&<Col>
+                <Alert variant="info" className="text-center">
+                    No results found
+                </Alert>
+            </Col>}
             {renderDiagnosis()}
         </>
     );

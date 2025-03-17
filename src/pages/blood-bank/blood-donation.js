@@ -11,7 +11,7 @@ function BloodDonation() {
     return (
         <Row className="py-5 justify-content-center" >
             <Col xs={12} md={8} lg={6}>
-                <BloodBankForm />
+                <BloodBankForm  isRequest={false}/>
             </Col>
         </Row>
 );

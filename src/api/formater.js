@@ -17,7 +17,7 @@ const formateWithDate = (obj) =>{
     }
 }
 const formateDonationRequest = ({ patientId, city, governorate,bloodType,requiredDonaters }) =>{
-    const request = {
+    return {
         id : nanoid(12),
         patientId,
         city,

@@ -1,32 +1,49 @@
 import MedicineInputs from "./medicine-inputs";
 import { MdAdd } from 'react-icons/md'
 import { useDispatch, useSelector } from "react-redux";
-import { addFormMedicine, createDiagnosis, setFormError, setFromDescription } from "../../features/medicalHistory";
+import { addFormMedicine,  setFormError, setFromDescription } from "../../features/diagnosisForm";
+import { createDiagnosis } from "../../features/medicalHistory";
 import { Form, Button, Alert, Spinner, Card, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 function AddDiagnosis({ patientId }) {
-    const { description, error, medicines, isLoading } = useSelector(state => state.medicalHistory.diagnosisFrom);
+    const { description, error, medicines, isLoading } = useSelector(state => state.diagnosisForm);
     const MedicinedList = medicines.map((med) => <MedicineInputs key={med.id} id={med.id} {...med} />);
     const dispatch = useDispatch();
 
+   
     const handleSubmitDiagnosis = async (e) => {
         e.preventDefault();
         if (medicines.every(med => (med.name && med.dose && med.duration)) && description) {
             dispatch(setFormError(''));
-            await toast.promise(
-                dispatch(createDiagnosis({ description, medicines, patientId })),
-                {
-                    pending:'Submitting The Diagnosis...',
-                    error: error ||'Someting Want Wrong, Please Try Again',
-                    success:'Submited The Diagnosis Successfully'
-                }
-
-            )
+            try {
+                await toast.promise(
+                    dispatch(createDiagnosis({ description, medicines, patientId })).unwrap(),
+                    {
+                        pending: 'Submitting The Diagnosis...',
+                        success: 'Submitted The Diagnosis Successfully',
+                        error: {
+                            render({ data }) {
+                                // Handle different error formats
+                                return data|| 
+                                        data?.message || 
+                                        'Something Went Wrong, Please Try Again';
+                            }
+                        }
+                    }
+                );
+                // Clear form on success
+                dispatch(setFromDescription(''));
+            } catch (error) {
+                // Error already handled by toast
+            }
         } else {
-            dispatch(setFormError('Please fill out all medicine fields first'));
+            const errorMsg = 'Please fill out all medicine fields first';
+            dispatch(setFormError(errorMsg));
+            toast.error(errorMsg);
         }
     };
+
 
     const addMedicineHandler = () => {
         dispatch(addFormMedicine());

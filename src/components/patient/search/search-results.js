@@ -31,7 +31,7 @@ function SearchResults() {
     const cartType = searchParams.get('searchFor')
     const Result = (cartType === 'doctor' || cartType === 'nurse') ? ResultCard : BloodCard;
     const ResultsItems = data.map(item => (
-            <Result key={item.id} {...item} />));
+            <Result key={item.clinicId || item.id} {...item} />));
 
     useEffect(() => {
         dispatch(getSearchResult({ searchQueries: location.search }));
@@ -50,11 +50,11 @@ function SearchResults() {
     return (
         <>
             <aside className="search-results">
-                <div className="d-flex justify-content-between justify-content-md-end align-items-start align-items-sm-center my-3">
+                <div className="d-flex justify-content-between justify-content-lg-end align-items-start align-items-sm-center my-3">
                     <Button 
                         variant="outline-secondary" 
                         onClick={() => setOverlay(true)}
-                        className="d-flex d-md-none align-items-center gap-2 mb-2 mb-md-0"
+                        className="d-flex d-lg-none align-items-center gap-2 mb-2 mb-md-0"
                     >
                         <MdFilterListAlt />
                         <span>Filters</span>

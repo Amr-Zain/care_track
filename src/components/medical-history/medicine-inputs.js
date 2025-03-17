@@ -1,5 +1,5 @@
 import { RiDeleteBin5Line } from 'react-icons/ri';
-import { deleteFormMedicine, setFormMedicine } from '../../features/medicalHistory';
+import { deleteFormMedicine, setFormMedicine } from '../../features/diagnosisForm';
 import { useDispatch } from 'react-redux';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 
@@ -32,11 +32,12 @@ function MedicineInputs({ id, name, dose, duration, description }) {
             <Col md={2}>
                 <Form.Group>
                     <Form.Control
-                        type="text"
+                        type="number"
+                        min='1'
                         name="dose"
                         className='bg-white'
                         value={dose}
-                        placeholder="Dosage per day"
+                        placeholder="Dosage(D)"
                         onChange={medicineChange}
                     />
                 </Form.Group>
@@ -46,10 +47,11 @@ function MedicineInputs({ id, name, dose, duration, description }) {
                 <Form.Group>
                     <Form.Control
                         type="number"
+                        min='1'
                         name="duration"
                         className='bg-white'
                         value={duration}
-                        placeholder="Duration (weeks)"
+                        placeholder="Duration(D)"
                         onChange={medicineChange}
                     />
                 </Form.Group>
