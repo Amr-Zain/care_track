@@ -19,26 +19,49 @@ dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
 
-let sequelize: Sequelize;
-if (process.env.DATABASE_URL) {
-  sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'mysql',
-    logging: env === 'development' ? console.log : false,
-  });
-} else {
-  sequelize = new Sequelize(
-    process.env.DB_NAME as string,
-    process.env.DB_USER as string,
-    process.env.DB_PASSWORD as string,
-    {
-      host: process.env.DB_HOST,
-      dialect: 'mysql',
-      port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
-    }
-  );
-}
+const getSSLConfig = () => {
+  if (env === 'production') {
+    return {
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false // For self-signed certificates
+        }
+      }
+    };
+  }
+  return {};
+};
 
-// Setup associations
+const sequelize = process.env.DB_PUBLIC_URL
+  ? new Sequelize(process.env.DB_PUBLIC_URL, {
+      dialect: 'mysql',
+      ...getSSLConfig(),
+      pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+      }
+    })
+  : new Sequelize(
+      process.env.DB_NAME!,
+      process.env.DB_USER!,
+      process.env.DB_PASSWORD,
+      {
+        host: process.env.DB_HOST,
+        dialect: 'mysql',
+        port: parseInt(process.env.DB_PORT || '3306'),
+        logging: env === 'development' ? console.log : false,
+        pool: {
+          max: 5,
+          min: 0,
+          acquire: 30000,
+          idle: 10000
+        }
+      }
+    );
+
 const db = {
   sequelize,
   Sequelize,

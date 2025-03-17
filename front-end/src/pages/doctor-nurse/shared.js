@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../../components/doctor/nav";
 import Header from "../../components/doctor/header/index";

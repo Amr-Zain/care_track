@@ -1,4 +1,4 @@
-import { object, string, number, date } from "yup";
+import { object, string, number } from "yup";
 
 export default interface Patient {
     id : string;

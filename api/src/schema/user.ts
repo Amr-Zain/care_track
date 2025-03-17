@@ -1,4 +1,4 @@
-import { object, string, date, mixed, number, bool } from "yup";
+import { object, string, mixed, number, bool } from "yup";
 import { UserType } from "../utill/types";
 
 export default interface User {

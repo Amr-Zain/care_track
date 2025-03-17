@@ -7,8 +7,20 @@
     "target": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+
+    "incremental": true, 
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "strict": false
   },
   "lib": ["es2015"],
   "include":["./src/**/*"],
+  "exclude": [
+    "node_modules",            
+    "**/*.test.ts",            
+    "**/*.spec.ts",
+    "dist"                     
+  ]
+  
 }

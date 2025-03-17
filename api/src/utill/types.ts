@@ -30,7 +30,7 @@ export interface searchNersesFilter {
 } */
 
 import { User } from "../schema";
-import { ModelStatic, Model } from 'sequelize';
+import { ModelStatic } from 'sequelize';
 import UserModle from '../models/user'; // Assuming user.model.ts is in the same directory
 import Appointment from '../models/appointment'; // Add other model imports
 import Receptionist from '../models/receptionist';

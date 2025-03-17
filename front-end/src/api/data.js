@@ -11,7 +11,7 @@ console.log(a)
 
 
 
-const baseUrl =  process.env.REACT_APP_API_URL ||'http://localhost:3030/api/v1';
+const baseUrl =  process.env.REACT_APP_API_URL ||'https://care-track-api-production.up.railway.app/api/v1/';
 
 
 

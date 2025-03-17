@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { RequestWithUserSession, UserType } from "../utill/types";
+import { RequestWithUserSession } from "../utill/types";
 
 
 const checkUserType = (type: number[]) =>{

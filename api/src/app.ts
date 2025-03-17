@@ -66,7 +66,7 @@ app.use('/public', express.static(path.join(__dirname, '../public'), {
 
 
 
- app.use('/api/v1/sessions', sessionRouter);
+ app.use('/api/v1/sessions', sessionRouter);  
  app.use('/api/v1/users', userRouter);
  app.use('/api/v1/appointments', appointmentRouter);
  app.use('/api/v1/patients', patientRouter);

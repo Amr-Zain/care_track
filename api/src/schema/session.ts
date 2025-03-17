@@ -1,4 +1,4 @@
-import {  object, string, mixed } from "yup";
+import {  object, string } from "yup";
 
 export default interface Session {
     id : string;

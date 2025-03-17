@@ -1,4 +1,4 @@
-import { Session, User } from "./../../schema";
+import { Session } from "./../../schema";
 export default interface SessionDAO  {
     createSession: (session: Session)=>Promise<void>;
     getSessionById :( sessionId :string)=>Promise<Session>;

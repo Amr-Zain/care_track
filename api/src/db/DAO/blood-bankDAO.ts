@@ -1,5 +1,5 @@
 import { BloodDonator } from "../../schema/blood-bank";
-import { BloodRequest, Clinic, ClinicSchedule } from "./../../schema";
+import { BloodRequest } from "./../../schema";
 
 export default interface BloodBankDAO  {
     createBloodRequest:  (bloodRequest: BloodRequest ) => Promise<void>;

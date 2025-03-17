@@ -1,8 +1,7 @@
 import { RequestWithUserSession } from "../utill/types";
 import Datastore from '../db/services';
 import { StatusCodes } from "http-status-codes";
-import { Response, Request } from "express";
-import { Clinic, Receptionist, User } from "../schema";
+import { Response } from "express";
 import crypto from "crypto";
 
 const datastore = new Datastore();
