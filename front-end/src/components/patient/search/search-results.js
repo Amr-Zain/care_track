@@ -90,7 +90,7 @@ function SearchResults() {
                     {data.length > 0 ? (
                         ResultsItems
                     ) : (
-                        <Col>
+                        !error&&<Col>
                             <Alert variant="info" className="text-center">
                                 No results found
                             </Alert>

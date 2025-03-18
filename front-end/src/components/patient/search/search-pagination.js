@@ -12,7 +12,7 @@ function SearchPagination() {
         dispatch(setFilter({page: event.selected+1}))
         setSearshParams({ ...Object.fromEntries(searchParams), page: event.selected+1});
     }
-    return ( <div className='paginate'>
+    return ( <div className='paginate mt-3'>
                 <ReactPaginate
                     activeClassName={'item active '}
                     breakClassName={'item break-me '}

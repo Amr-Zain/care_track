@@ -64,6 +64,7 @@ const searchSlice = createSlice({
                 })
                 .addCase(getSearchResult.rejected, (state, { payload }) => {
                     state.isLoading = false;
+                    state.result = {data:[],count:0};
                     state.error = payload;
                 })
             }

@@ -381,7 +381,6 @@ class Datastore implements UserDAO, AppointmentDAO, DiagnosisDAO,ClinicDAO,
     async getPtinetDiagnosisSpecializations(patientId: string): Promise<{value: string,id:string}[]>{
         const specializations = await db.Diagnosis.findAll({
             attributes: [
-                'id',
                 [sequelize.col('DoctorNurse.specialization'), 'value'],
                 [sequelize.col('DoctorNurse.specialization'), 'label'],
             ],
@@ -525,7 +524,7 @@ class Datastore implements UserDAO, AppointmentDAO, DiagnosisDAO,ClinicDAO,
             },
             ],
             where: sequelize.literal(
-                `DATE_ADD(diagnosis.date, INTERVAL medicine.duration+3 DAY) >= CURDATE()`
+                `DATE_ADD(diagnosis.date, INTERVAL duration+3 DAY) >= CURDATE()`
             ),
             raw:true
         });
@@ -982,7 +981,7 @@ class Datastore implements UserDAO, AppointmentDAO, DiagnosisDAO,ClinicDAO,
         }
 
         const  count = await db.Clinic.count({
-            attributes:['id'],
+            attributes:[],
             include:[{
                 model:db.User,
                 as: 'doctor',
@@ -999,6 +998,9 @@ class Datastore implements UserDAO, AppointmentDAO, DiagnosisDAO,ClinicDAO,
         ],
         where:cityWhere,
         distinct: true,
+        group: [
+            'Clinic.id',
+          ], 
         })
         const  doctors = await db.Clinic.findAll({
             attributes: [
@@ -1048,9 +1050,16 @@ class Datastore implements UserDAO, AppointmentDAO, DiagnosisDAO,ClinicDAO,
             offset,
             subQuery: false,
             order,
-            group: ['Clinic.id'], 
+            group: [
+                'doctor.id',
+                'Clinic.id',
+                'Clinic.clinicName',
+                'Clinic.location',
+                'Clinic.city',
+                'Clinic.phone',
+              ], 
         }) as unknown as DoctorFullData[];
-        return { count, data:doctors }
+        return { count: count.length, data:doctors }
     }
     async searchNurse({ city,gender, sort, offset,limit  }) :Promise<{data:NurseFullData[], count:number}>{
         const where:{ city?:string, gender?:boolean, userType: number} ={ userType:3 };
@@ -1132,19 +1141,22 @@ class Datastore implements UserDAO, AppointmentDAO, DiagnosisDAO,ClinicDAO,
             [sequelize.Op.gte]: date,
         };
 
-        const count = (await db.Blood.count({ 
-            attributes:[],
+        
+        const countResult  = (await db.Blood.count({ 
+            attributes:[[sequelize.fn('COUNT', sequelize.fn('DISTINCT', sequelize.col('patientId'))), 'count']],
             where,
-            group: ['patientId'],
-        }) as unknown as number[]).length;
+            group: ['patientId', 'id'],
+        }) as unknown as number[]);
+        const count = countResult.length as number;
+        console.log(count)
         const bloodBank =  await db.Blood.findAll({
             attributes:[
+                [sequelize.fn('MAX', sequelize.col('date')), 'date'],
                 'id',
                 'patientId',
                 'isRequest',
                 'bloodType',
                 'city',
-                'date',
                 'describtion',
                 [sequelize.fn('CONCAT', sequelize.col('patient.firstName'), sequelize.literal("' '"), sequelize.col('patient.lastName')), 'name'],
                 [sequelize.col('patient.email'), 'email'],
@@ -1160,7 +1172,7 @@ class Datastore implements UserDAO, AppointmentDAO, DiagnosisDAO,ClinicDAO,
             raw:true,
             limit,
             offset,
-            group: ['patient.id'],
+            group: ['patient.id', 'Blood.id'],
             subQuery: false,
         }) as unknown as BloodDonator[];
         

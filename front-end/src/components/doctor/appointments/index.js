@@ -16,13 +16,12 @@ function DoctorAppointments({appointments}) {
                         {error}
                     </Alert>
                 )}
-
                 {isLoading ? (
                     <div className="text-center py-4">
                         <Spinner animation="border" variant="primary" />
                     </div>
                 ) : (
-                    Appointments.length ===0? 
+                    Appointments.length ===0 && !error? 
                         <div className="text-center">NO Appointmets Found</div>
                         : 
                         <div style={{ 

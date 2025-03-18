@@ -138,9 +138,9 @@ export default function DiagnosisList({ patientId }) {
                     </Row>
                 </Card.Body>
             </Card>
-            {!diagnosis.length &&<Col>
+            {!diagnosis.length&& !error &&<Col>
                 <Alert variant="info" className="text-center">
-                    No results found
+                    No results found please choose different date range
                 </Alert>
             </Col>}
             {renderDiagnosis()}

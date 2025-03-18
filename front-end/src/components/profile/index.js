@@ -35,18 +35,22 @@ function Profile() {
             dispatch(setError(message))
             return;
         }
-        await toast.promise(dispatch(bookAppointment({ date: appointmentTime, type: userType, doctorId: id, nurseId: id, clinicId })).unwrap(),
-        {
-            pending:'Booking The Appointment...',
-            success:'The Appointment Booked Successfully.',
-            error: {
-                render({ data }) {
-                    console.log("Toast error data:", data); 
-                    return data?.payload || 'Something Went Wrong, Please Try Again.';
+        try{
+            await toast.promise(
+                dispatch(bookAppointment({ date: appointmentTime, type: userType, doctorId: id, nurseId: id, clinicId })).unwrap(),
+            {
+                pending:'Booking The Appointment...',
+                success:'The Appointment Booked Successfully.',
+                error: {
+                    render({ data }) {
+                        console.log("Toast error data:", data); 
+                        return data?.payload || 'Something Went Wrong, Please Try Again.';
+                    }
                 }
-            }
+            })
+        }catch(e){
+            //handled in the toaster
         }
-    )
     }
 
     useEffect(() => {
