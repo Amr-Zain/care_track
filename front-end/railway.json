@@ -1,0 +1,16 @@
+{
+    "swap": {
+      "sizeMb": 4096
+    },
+    "build": {
+      "nixpacksPlan": {
+        "phases": {
+          "build": {
+            "env": {
+              "NODE_OPTIONS": "--max-old-space-size=8192"
+            }
+          }
+        }
+      }
+    }
+  }
