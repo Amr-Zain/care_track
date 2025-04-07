@@ -192,6 +192,7 @@ export const createUser = async( user )=>{
 
 export const listPopuler= async ({type})=>{
     const { data:{ data} } = await api.get(`/search/${type}/all?sort=1&limit=10`);
+    console.log(data)
     return data;
 }
 

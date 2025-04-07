@@ -38,6 +38,7 @@ const Appointment = ({
                         <Card.Img
                             variant="top"
                             src={image || DEFAULT_IMG_URL}
+                            onError={(e)=>e.target.src= userType === 'doctor'?'https://care-track-api-production.up.railway.app/public/images/user-4.jpg':"https://care-track-api-production.up.railway.app/public/images/user-11.jpg"}
                             alt={`${userType === 'doctor' ? 'Dr.' : ''} ${name}`}
                             className="rounded-circle me-3 flex-shrink-0"
                             style={{ 

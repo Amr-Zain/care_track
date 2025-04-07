@@ -80,5 +80,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 (async function start(){
-    app.listen(PORT,()=>console.log(`app listening on port ${PORT}`))
+    app.listen(PORT,()=>console.log(`app listening on port ${PORT}`));
 })(); 

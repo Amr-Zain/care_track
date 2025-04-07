@@ -52,6 +52,8 @@ export default function Diagnosis({
                                 src={doctorImage || DEFAULT_IMG_URL} 
                                 alt={`Dr. ${doctorName}`} 
                                 className="rounded-circle"
+                                onError={(e)=>e.target.src= 'https://care-track-api-production.up.railway.app/public/images/user-4.jpg'}
+
                                 style={{ 
                                     width: '80px', 
                                     height: '80px', 

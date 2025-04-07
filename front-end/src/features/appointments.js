@@ -5,7 +5,7 @@ import {  } from 'react-icons/md'
 const initialState = {
     date: new Date().getTime(),
     appointments: [],
-    todayApps:[], //for doctors and nurse
+    todayApps:[], 
     totalPatients:0,
     isLoading: false,
     error:'',

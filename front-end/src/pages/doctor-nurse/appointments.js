@@ -11,11 +11,11 @@ function Appointments() {
     const { date, appointments } = useSelector((store) => store.appointments);
     const dispatch = useDispatch();
     const handleDateChange = (newDate) => {
-        console.log(new Date(newDate).getTime())
-        dispatch(setDate({ date: new Date(newDate).getTime() }));
+       const d = new Date(newDate).getTime();
+        dispatch(setDate({ date: d }));
     };
     useEffect(() => {
-        if(appointments.length ===0)dispatch(getAppointments({ date:new Date(date).getTime() }))
+        dispatch(getAppointments({ date:new Date(date).getTime() }))
         document.title = 'Doctor-Appointments';
     }, [appointments.length, date, dispatch]);
 

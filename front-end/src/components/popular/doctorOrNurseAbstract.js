@@ -22,6 +22,8 @@ const DoctorNurseCard = ({ id, image, name, rating, specialization, description 
                     <Card.Img
                         variant="top"
                         src={image || DEFAULT_IMG_URL}
+                        onError={(e)=>e.target.src= specialization?'https://care-track-api-production.up.railway.app/public/images/user-4.jpg':"https://care-track-api-production.up.railway.app/public/images/user-11.jpg"}
+
                         alt={name}
                         className="rounded-circle me-3"
                         style={{
