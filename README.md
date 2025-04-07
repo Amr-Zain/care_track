@@ -1,7 +1,10 @@
 # care-track 
-https://github.com/Amr-Zain/care_track/blob/secondary/demo/demo.mp4
 
-##Description
+[![Demo Video](front-end/public/screenshots/login.JPG)](https://github.com/Amr-Zain/care_track/blob/secondary/demo/demo.mp4
+)
+
+
+## Description
 The Healthcare Management System is a modern web application designed to enhance healthcare services through efficient scheduling, seamless management of patient medical records, and a platform for blood donation tracking. Built using React, Redux Toolkit, and Bootstrap, this application aims to improve the accessibility and effectiveness of healthcare for both patients and medical professionals.
 
 
@@ -44,40 +47,39 @@ The Healthcare Management System is a modern web application designed to enhance
 
 
 ## UI Screenshots
-* all the screenshots are in the public/screenshots 
-* ![Demo](https://www.youtube.com/watch?v=PL8uJ-O683c&ab_channel=AmrZain)
-   "https://www.youtube.com/watch?v=PL8uJ-O683c&ab_channel=AmrZain"
+* all the screenshots are in the front-end/public/screenshots 
+
   
 ### Login
-![login](/public/screenshots/login.JPG)
+![login](front-end/public/screenshots/login.JPG)
 
 ### Main Dashboard
 
-![Main Dashboard](public/screenshots/patient-dashboard.png)
+![Main Dashboard](front-end/public/screenshots/patient-dashboard.png)
 
 This is the main dashboard, providing an overview of upcoming appointments, and quick access to patient records.
 
 ### Appointments
 
-![Appointment Booking](public/screenshots/appointment.png)
+![Appointment Booking](front-end/public/screenshots/appointment.png)
 
 Patients can easily see appointments with doctors or nurses through this intuitive interface.
 
 ### Patient Medical Records
 
-![Patient Medical History](public/screenshots/medical-history.png)
+![Patient Medical History](front-end/public/screenshots/medical-history.png)
 
 Healthcare providers can access and manage detailed patient medical records.
 
 ### Blood Donation Platform
-![Blood Donation Form](public/screenshots/blood-request.png)
+![Blood Donation Form](front-end/public/screenshots/blood-request.png)
 
 ### Search Platform Doctor
-![Search Platform](public/screenshots/search-doctor.png)
+![Search Platform](front-end/public/screenshots/search-doctor.png)
 
 ### Search Platform Nurse
-![Search Platform](public/screenshots/search-nurse.png)
+![Search Platform](front-end/public/screenshots/search-nurse.png)
 
 ### Search Platform Blood Donor
-![Search Platform](public/screenshots/search-donator.png)
+![Search Platform](front-end/public/screenshots/search-donator.png)
 
