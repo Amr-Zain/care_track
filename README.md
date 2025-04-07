@@ -1,7 +1,6 @@
 # care-track 
-
-[![Demo Video](front-end/public/screenshots/login.JPG)](https://github.com/Amr-Zain/care_track/blob/secondary/demo/demo.mp4
-)
+## Demo
+[![Video Thumbnail with Play Button](front-end/public/screenshots/login.JPG)](https://www.youtube.com/watch?v=mh_J7L7FxXU&ab_channel=AmrZain)
 
 
 ## Description
