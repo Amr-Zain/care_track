@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -7,19 +6,26 @@ import { getAppointments } from "../../../features/appointments";
 import Appointment from "./patient-appointment";
 import { APPOINTMENTS, PATIENT } from "../../../constants/routes";
 import DeleteUpdateOverlay from "./delete-update-overlay";
-import '../../../style/appointment.css'
+import "../../../style/appointment.css";
 
 const Appointments = ({ isAppPage }) => {
   const dispatch = useDispatch();
-  const { appointments, isLoading, error } = useSelector((store) => store.appointments);
-  const [overlay, setOverlay] = useState({ show: false, type: "", id: "", name: "" });
+  const { appointments, isLoading, error } = useSelector(
+    (store) => store.appointments
+  );
+  const [overlay, setOverlay] = useState({
+    show: false,
+    type: "",
+    id: "",
+    name: "",
+  });
 
   const updateOverlay = useCallback((updates) => {
-    setOverlay(state => ({ ...state, ...updates }));
+    setOverlay((state) => ({ ...state, ...updates }));
   }, []);
 
   useEffect(() => {
-    if(!appointments.length)dispatch(getAppointments({ date: null }));
+    dispatch(getAppointments({ date: null }));
   }, [appointments.length, dispatch]);
 
   const renderAppointmentsList = () => {
@@ -42,15 +48,23 @@ const Appointments = ({ isAppPage }) => {
     }
 
     if (appointments.length === 0) {
-      return isAppPage && (
-        <div className="no-appointments text-center m-5 p-5">
-          There Are No Upcoming Appointments
-        </div>
+      return (
+        isAppPage && (
+          <div className="no-appointments text-center m-5 p-5">
+            There Are No Upcoming Appointments
+          </div>
+        )
       );
     }
 
     return (
-      <Row className={`${!isAppPage ? "flex-nowrap" : "justify-content-center justify-content-center "}`}>
+      <Row
+        className={`${
+          !isAppPage
+            ? "flex-nowrap"
+            : "justify-content-center justify-content-center "
+        }`}
+      >
         {appointments.map((app) => (
           <Appointment key={app.id} {...app} setOverlay={updateOverlay} />
         ))}
@@ -58,22 +72,19 @@ const Appointments = ({ isAppPage }) => {
     );
   };
 
-
   return (
     <div className={isAppPage ? "" : "appointments-slider"}>
       {(appointments.length !== 0 || isLoading) && (
         <div className="title">
-          <Link to={`/${PATIENT}/${APPOINTMENTS}`}>
-            Upcoming Appointments
-          </Link>
+          <Link to={`/${PATIENT}/${APPOINTMENTS}`}>Upcoming Appointments</Link>
         </div>
       )}
 
-      <div className="appointments-container">
-          {renderAppointmentsList()}
-      </div>
-      
-      {overlay.show && <DeleteUpdateOverlay setOverlay={updateOverlay} overlay={overlay} />}
+      <div className="appointments-container">{renderAppointmentsList()}</div>
+
+      {overlay.show && (
+        <DeleteUpdateOverlay setOverlay={updateOverlay} overlay={overlay} />
+      )}
     </div>
   );
 };
